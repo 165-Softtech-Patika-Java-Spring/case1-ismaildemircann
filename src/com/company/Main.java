@@ -1,7 +1,7 @@
 package com.company;
 
 import com.company.service.HouseService;
-import com.company.util.HouseListMethods;
+import com.company.util.HouseDao;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -9,9 +9,9 @@ import java.util.ArrayList;
 public class Main {
 
     public static void main(String[] args) {
-        HouseListMethods houseListMethods = new HouseListMethods();
-        houseListMethods.fillAllTypeOfHouseLists();
-        HouseService houseService = new HouseService(houseListMethods);
+        HouseDao houseDao = new HouseDao();
+        houseDao.fillAllTypeOfHouseLists();
+        HouseService houseService = new HouseService(houseDao);
 
         System.out.println("------------------------------------------------");
         BigDecimal totalPricesOfHouses = houseService.getTotalPriceOfHouses();
@@ -34,7 +34,7 @@ public class Main {
         System.out.println("Tüm tipteki evlerin ortalama metrekaresi: " + avgSquareMetersOfAllTypesOfHouses);
 
         System.out.println("------------------------------------------------");
-        ArrayList<String> houseListFiltersByNumbersOfRoomAndHall = houseService.getHouseListFiltersByNumbersOfRoomAndHall();
+        ArrayList<String> houseListFiltersByNumbersOfRoomAndHall = houseService.getHouseListFiltersByNumbersOfRoomAndLivingRoom();
         System.out.println("Oda ve salon sayısına göre tüm tipteki evleri filtrele: " + houseListFiltersByNumbersOfRoomAndHall);
     }
 }

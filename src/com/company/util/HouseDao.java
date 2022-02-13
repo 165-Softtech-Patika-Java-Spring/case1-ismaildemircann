@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class HouseListMethods {
+public class HouseDao {
     private ArrayList<House> houseList = new ArrayList<>();
     private ArrayList<House> villaList = new ArrayList<>();
     private ArrayList<House> summerHouseList = new ArrayList<>();

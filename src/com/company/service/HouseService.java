@@ -1,6 +1,6 @@
 package com.company.service;
 
-import com.company.util.HouseListMethods;
+import com.company.util.HouseDao;
 import com.company.model.House;
 
 import java.math.BigDecimal;
@@ -9,47 +9,74 @@ import java.util.ArrayList;
 
 public class HouseService {
 
-    private HouseListMethods houseListMethods;
+    private HouseDao houseDao;
 
-    public HouseService(HouseListMethods houseListMethods) {
-        this.houseListMethods = houseListMethods;
+    public HouseService(HouseDao houseListMethods) {
+        this.houseDao = houseListMethods;
     }
 
+    /**
+     * @return This method returns total price of houses
+     */
     public BigDecimal getTotalPriceOfHouses() {
-        return calculateTotalPrice(houseListMethods.getHouseList());
+        return calculateTotalPrice(houseDao.getHouseList());
     }
 
+    /**
+     * @return This method returns total price of villas
+     */
     public BigDecimal getTotalPriceOfVillas() {
-        return calculateTotalPrice(houseListMethods.getVillaList());
+        return calculateTotalPrice(houseDao.getVillaList());
     }
 
+    /**
+     * @return This method returns total price of summer houses
+     */
     public BigDecimal getTotalPriceOfSummerHouses() {
-        return calculateTotalPrice(houseListMethods.getSummerHouseList());
+        return calculateTotalPrice(houseDao.getSummerHouseList());
     }
 
+    /**
+     * @return This method returns total price all types of houses
+     */
     public BigDecimal getTotalPriceAllTypesOfHouses() {
-        return calculateTotalPrice(houseListMethods.getAllTypesOfHouseLists());
+        return calculateTotalPrice(houseDao.getAllTypesOfHouseLists());
     }
 
+    /**
+     * @return This method returns average square meters of houses
+     */
     public BigDecimal getAvgSquareMetersOfHouses() {
-        return calculateAvgSquareMeterHouse(houseListMethods.getHouseList());
+        return calculateAvgSquareMeterHouse(houseDao.getHouseList());
     }
 
+    /**
+     * @return This method returns average sguare meters of villas
+     */
     public BigDecimal getAvgSquareMetersOfVillas() {
-        return calculateAvgSquareMeterHouse(houseListMethods.getVillaList());
+        return calculateAvgSquareMeterHouse(houseDao.getVillaList());
     }
 
+    /**
+     * @return This method returns average sguare meters of summer houses
+     */
     public BigDecimal getAvgSquareMetersOfSummerHouses() {
-        return calculateAvgSquareMeterHouse(houseListMethods.getSummerHouseList());
+        return calculateAvgSquareMeterHouse(houseDao.getSummerHouseList());
     }
 
+    /**
+     * @return This method returns average sguare meters all types of houses
+     */
     public BigDecimal getAvgSquareMetersAllTypesOfHouses() {
-        return calculateAvgSquareMeterHouse(houseListMethods.getAllTypesOfHouseLists());
+        return calculateAvgSquareMeterHouse(houseDao.getAllTypesOfHouseLists());
     }
 
-    public ArrayList<String> getHouseListFiltersByNumbersOfRoomAndHall() {
+    /**
+     * @return This method returns house list filters by numbers of room and living room
+     */
+    public ArrayList<String> getHouseListFiltersByNumbersOfRoomAndLivingRoom() {
         ArrayList<String> numberOfRoomsAndHallList = new ArrayList<>();
-        for (House house : houseListMethods.getAllTypesOfHouseLists()) {
+        for (House house : houseDao.getAllTypesOfHouseLists()) {
             String numberOfRoomsAndHall = "(" + house.getNumberOfRooms().toString() + " + " +
                     house.getNumberOfLivingRooms().toString() + ")";
 
@@ -74,12 +101,16 @@ public class HouseService {
 
         BigDecimal avgSquareMeter = new BigDecimal(squareMeter);
         avgSquareMeter = avgSquareMeter.divide(BigDecimal.valueOf(houseList.size()), 2, RoundingMode.CEILING);
-        if (avgSquareMeter.scale() > 0) {
-            avgSquareMeter = avgSquareMeter.stripTrailingZeros();
+        return checkScaleZero(avgSquareMeter);
+    }
+
+    private BigDecimal checkScaleZero(BigDecimal squaremeter) {
+        if (squaremeter.scale() > 0) {
+            squaremeter = squaremeter.stripTrailingZeros();
         }
-        if (avgSquareMeter.scale() < 0) {
-            return avgSquareMeter.setScale(0);
+        if (squaremeter.scale() < 0) {
+            return squaremeter.setScale(0);
         }
-        return avgSquareMeter;
+        return squaremeter;
     }
 }
