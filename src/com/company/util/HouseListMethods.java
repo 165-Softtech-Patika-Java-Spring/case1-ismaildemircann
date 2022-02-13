@@ -12,6 +12,7 @@ public class HouseListMethods {
     private ArrayList<House> houseList = new ArrayList<>();
     private ArrayList<House> villaList = new ArrayList<>();
     private ArrayList<House> summerHouseList = new ArrayList<>();
+    private ArrayList<House> allTypesOfHouseLists = new ArrayList<>();
 
     public ArrayList<House> getHouseList() {
         return houseList;
@@ -23,6 +24,13 @@ public class HouseListMethods {
 
     public ArrayList<House> getSummerHouseList() {
         return summerHouseList;
+    }
+
+    public ArrayList<House> getAllTypesOfHouseLists() {
+        allTypesOfHouseLists.addAll(houseList);
+        allTypesOfHouseLists.addAll(villaList);
+        allTypesOfHouseLists.addAll(summerHouseList);
+        return allTypesOfHouseLists;
     }
 
     public void fillAllTypeOfHouseLists() {

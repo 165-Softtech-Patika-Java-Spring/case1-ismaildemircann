@@ -28,8 +28,7 @@ public class HouseService {
     }
 
     public BigDecimal getTotalPriceAllTypesOfHouses() {
-        ArrayList<House> allTypesOfHouseLists = mergeAllHouseList();
-        return calculateTotalPrice(allTypesOfHouseLists);
+        return calculateTotalPrice(houseListMethods.getAllTypesOfHouseLists());
     }
 
     public BigDecimal getAvgSquareMetersOfHouses() {
@@ -45,17 +44,15 @@ public class HouseService {
     }
 
     public BigDecimal getAvgSquareMetersAllTypesOfHouses() {
-        ArrayList<House> allTypesOfHouseLists = mergeAllHouseList();
-        return calculateAvgSquareMeterHouse(allTypesOfHouseLists);
+        return calculateAvgSquareMeterHouse(houseListMethods.getAllTypesOfHouseLists());
     }
 
     public ArrayList<String> getHouseListFiltersByNumbersOfRoomAndHall() {
-        ArrayList<House> allTypesOfHouseLists = mergeAllHouseList();
         ArrayList<String> numberOfRoomsAndHallList = new ArrayList<>();
+        for (House house : houseListMethods.getAllTypesOfHouseLists()) {
+            String numberOfRoomsAndHall = "(" + house.getNumberOfRooms().toString() + " + " +
+                    house.getNumberOfLivingRooms().toString() + ")";
 
-        for (int i = 0; i < allTypesOfHouseLists.size(); i++) {
-            String numberOfRoomsAndHall = "(" + allTypesOfHouseLists.get(i).getNumberOfRooms().toString() + " + "
-                    + allTypesOfHouseLists.get(i).getNumberOfLivingRooms().toString() + ")";
             numberOfRoomsAndHallList.add(numberOfRoomsAndHall);
         }
         return numberOfRoomsAndHallList;
@@ -63,36 +60,26 @@ public class HouseService {
 
     private BigDecimal calculateTotalPrice(ArrayList<House> houseList) {
         BigDecimal totalPrice = new BigDecimal(0);
-        for (int i = 0; i < houseList.size(); i++) {
-            totalPrice = totalPrice.add(houseList.get(i).getPrice());
+        for (House house : houseList) {
+            totalPrice = totalPrice.add(house.getPrice());
         }
         return totalPrice;
     }
 
     private BigDecimal calculateAvgSquareMeterHouse(ArrayList<House> houseList) {
         Integer squareMeter = 0;
-        for (int i = 0; i < houseList.size(); i++) {
-            squareMeter += houseList.get(i).getSquareMeter();
+        for (House house : houseList) {
+            squareMeter += house.getSquareMeter();
         }
 
         BigDecimal avgSquareMeter = new BigDecimal(squareMeter);
         avgSquareMeter = avgSquareMeter.divide(BigDecimal.valueOf(houseList.size()), 2, RoundingMode.CEILING);
-
         if (avgSquareMeter.scale() > 0) {
             avgSquareMeter = avgSquareMeter.stripTrailingZeros();
         }
-
         if (avgSquareMeter.scale() < 0) {
             return avgSquareMeter.setScale(0);
         }
         return avgSquareMeter;
-    }
-
-    private ArrayList<House> mergeAllHouseList() {
-        ArrayList<House> allTypesOfHouseLists = new ArrayList<>();
-        allTypesOfHouseLists.addAll(houseListMethods.getHouseList());
-        allTypesOfHouseLists.addAll(houseListMethods.getVillaList());
-        allTypesOfHouseLists.addAll(houseListMethods.getSummerHouseList());
-        return allTypesOfHouseLists;
     }
 }
